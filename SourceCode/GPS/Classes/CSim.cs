@@ -2,15 +2,15 @@
 
 namespace AgOpenGPS
 {
-    public class CSim
+    public class CSim // клас для симуляції руху трактора // a class for simulating the movement of a tractor
     {
-        private readonly FormGPS mf;
+        private readonly FormGPS mf; // зміна для обєкту форма, яка ініціалізується в класі CSim // change for the shape object that is initialized in the CSim class
+        // властивості класу sim // properties of the sim class
+        #region properties sim 
 
-        #region properties sim
+        public double altitude = 300; // висота для симуляції не змінюється // height for simulation does not change
 
-        public double altitude = 300;
-
-        public double latitude, longitude;
+        public double latitude, longitude; // початкові координати // initial coordinates
 
         public double headingTrue, stepDistance = 0.0, steerAngle, steerangleAve = 0.0;
         public double steerAngleScrollBar = 0;
@@ -61,7 +61,7 @@ namespace AgOpenGPS
                 steerangleAve = steerAngle;
             }
 
-            mf.mc.actualSteerAngleDegrees = steerangleAve;
+            mf.mc.actualSteerAngleDegrees = steerangleAve;// Виводимо в форму 
 
             double temp = stepDistance * Math.Tan(steerangleAve * 0.0165329252) / 2;
             headingTrue += temp;
