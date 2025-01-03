@@ -123,16 +123,16 @@ namespace navtest
                                if (stepDistance < -0.06) isAccelBack = false;
                            }
                        }
-        /*
-                      public void CalculateNewPostionFromBearingDistance(double lat, double lng, double bearing, double distance)
-                      {
-                          double R = distance / 6371.0; // Earth Radius in Km
 
-                          double lat2 = Math.Asin((Math.Sin(lat) * Math.Cos(R)) + (Math.Cos(lat) * Math.Sin(R) * Math.Cos(bearing)));
-                          double lon2 = lng + Math.Atan2(Math.Sin(bearing) * Math.Sin(R) * Math.Cos(lat), Math.Cos(R) - (Math.Sin(lat) * Math.Sin(lat2)));
+        public void CalculateNewPostionFromBearingDistance(double lat, double lng, double bearing, double distance)
+        {
+            double R = distance / 6371.0; // Earth Radius in Km
 
-                          latitude = glm.toDegrees(lat2);
-                          longitude = glm.toDegrees(lon2);
-                      }*/
+            double lat2 = Math.Asin((Math.Sin(lat) * Math.Cos(R)) + (Math.Cos(lat) * Math.Sin(R) * Math.Cos(bearing)));
+            double lon2 = lng + Math.Atan2(Math.Sin(bearing) * Math.Sin(R) * Math.Cos(lat), Math.Cos(R) - (Math.Sin(lat) * Math.Sin(lat2)));
+
+            //latitude = glm.toDegrees(lat2); // !!! Зовн обчислення в класі CGLM
+            //longitude = glm.toDegrees(lon2);
+        }
     }
 }
