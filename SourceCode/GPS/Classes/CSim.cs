@@ -10,7 +10,7 @@ namespace AgOpenGPS
 
         public double altitude = 300; // висота для симуляції не змінюється // height for simulation does not change
 
-        public double latitude, longitude; // початкові координати // initial coordinates
+        public double latitude, longitude; //  координати //  coordinates
 
         public double headingTrue, stepDistance = 0.0, steerAngle, steerangleAve = 0.0;
         public double steerAngleScrollBar = 0;
