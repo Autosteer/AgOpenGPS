@@ -874,11 +874,11 @@ namespace AgOpenGPS
             YouTurnU, YouTurnH, CrossTrackBkgrnd
         }
 
-        public void LoadGLTextures()
+        public void LoadGLTextures()// Цей метод використовується для завантаження текстур OpenGL з ресурсів програми, які використовуються в програмі.
         {
-            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Texture2D);// Цей рядок в OpenGL дозволяє використовувати двовимірні текстури для подальших операцій візуалізації.
 
-            Bitmap[] oglTextures = new Bitmap[]
+            Bitmap[] oglTextures = new Bitmap[] // Масив заповнюється рядом об’єктів Bitmap, які, ймовірно, представляють зображення, що використовуються в програмі.
             {
                 Resources.z_Floor,Resources.z_Font,
                 Resources.z_Turn,Resources.z_TurnCancel,Resources.z_TurnManual,
@@ -895,19 +895,19 @@ namespace AgOpenGPS
                 Resources.YouTurnU, Resources.YouTurnH, Resources.z_crossTrackBkgnd
             };
 
-            texture = new uint[oglTextures.Length];
-
-            for (int h = 0; h < oglTextures.Length; h++)
+            texture = new uint[oglTextures.Length];// Це оголошує масив з іменем texture, який може містити послідовність цілих чисел без знаку.
+            for (int h = 0; h < oglTextures.Length; h++)// Цей цикл for використовується для ініціалізації кожного елементу масиву texture.
             {
-                using (Bitmap bitmap = oglTextures[h])
+                using (Bitmap bitmap = oglTextures[h])// Заява using гарантує Bitmap належну утилізацію об’єкта, звільняючи системні ресурси.
                 {
-                    GL.GenTextures(1, out texture[h]);
-                    GL.BindTexture(TextureTarget.Texture2D, texture[h]);
-                    BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                    GL.GenTextures(1, out texture[h]); // Цей рядок коду OpenGL генерує унікальний ідентифікатор текстури та зберігає його в h-thелементі масиву texture.
+                    GL.BindTexture(TextureTarget.Texture2D, texture[h]);// Цей рядок коду OpenGL прив’язує певну текстуру до активного блоку текстури
+                    BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);// Цей рядок коду C# блокує частину об’єкта Bitmap у пам’яті для ефективного доступу до пікселів
+                   // Цей рядок коду OpenGL визначає дані текстури для 2D-текстури, використовуючи інформацію про пікселі з попередньо заблокованого bitmapData.
                     GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                    bitmap.UnlockBits(bitmapData);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
+                    bitmap.UnlockBits(bitmapData);//Цей рядок коду C# розблоковує область об’єкта Bitmap, яка раніше була заблокована за допомогою LockBits()методу.
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);// Цей рядок коду OpenGL встановлює параметри текстури для мінімізації текстури.
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);// Цей рядок коду OpenGL встановлює параметри текстури для максимізації текстури.
                 }
             }
         }
@@ -1291,9 +1291,9 @@ namespace AgOpenGPS
         //take the distance from object and convert to camera data
         public void SetZoom()
         {
-            //match grid to cam distance and redo perspective
+            //match grid to cam distance and redo perspective // зіставте сітку з відстанню кулачка та повторіть перспективу
             camera.gridZoom = camera.camSetDistance / -15;
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
             gridToolSpacing = (int)(camera.gridZoom / tool.width + 0.5);
             if (gridToolSpacing < 1) gridToolSpacing = 1;
             camera.gridZoom = gridToolSpacing * tool.width;

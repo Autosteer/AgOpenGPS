@@ -9,36 +9,37 @@ namespace AgOpenGPS
 {
     public partial class FormGPS
     {
-        //extracted Near, Far, Right, Left clipping planes of frustum
+        //extracted Near, Far, Right, Left clipping planes of frustum // вилучено ближню, дальню, праву та ліву площини відсікання зрізу
+
         public double[] frustum = new double[24];
 
-        private bool isInit = false;
-        private double fovy = 0.7;
-        private double camDistanceFactor = -4;
+        private bool isInit = false; 
+        private double fovy = 0.7; 
+        private double camDistanceFactor = -4; 
 
         int mouseX = 0, mouseY = 0;
         public int steerModuleConnectedCounter = 0;
 
-        //data buffer for pixels read from off screen buffer
+        //data buffer for pixels read from off screen buffer//буфер даних для пікселів, які зчитуються з позаекранного буфера
 
         //data buffer for pixels read from off screen buffer
         byte[] rateRed = new byte[1];
         byte[] rateGrn = new byte[1];
         byte[] rateBlu = new byte[1];
 
-        byte[] grnPixels = new byte[150001];
+        byte[] grnPixels = new byte[150001]; 
 
         private bool isHeadlandClose = false;
 
         // When oglMain is created
         private void oglMain_Load(object sender, EventArgs e)
         {
-            oglMain.MakeCurrent();
-            LoadGLTextures();
-            GL.ClearColor(0.14f, 0.14f, 0.37f, 1.0f);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-            GL.CullFace(CullFaceMode.Back);
-            SetZoom();
+            oglMain.MakeCurrent();//set the oglMain to current
+            LoadGLTextures();//FormGPS.textures  - public void LoadGLTextures()
+            GL.ClearColor(0.14f, 0.14f, 0.37f, 1.0f);// встановлює колір очищення буфера
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);// встановлює функцію злиття
+            GL.CullFace(CullFaceMode.Back); // встановлює режим відкидання. Відкидає задні грани
+            SetZoom();//SetZoom() - встановлює зум -  public void SetZoom()
             tmrWatchdog.Enabled = true;
         }
 
