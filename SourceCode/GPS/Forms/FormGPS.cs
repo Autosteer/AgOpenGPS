@@ -1294,16 +1294,16 @@ namespace AgOpenGPS
             //match grid to cam distance and redo perspective // зіставте сітку з відстанню кулачка та повторіть перспективу
             camera.gridZoom = camera.camSetDistance / -15;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-            gridToolSpacing = (int)(camera.gridZoom / tool.width + 0.5);
+            gridToolSpacing = (int)(camera.gridZoom / tool.width + 0.5);//
             if (gridToolSpacing < 1) gridToolSpacing = 1;
             camera.gridZoom = gridToolSpacing * tool.width;
 
-            oglMain.MakeCurrent();
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            Matrix4 mat = Matrix4.CreatePerspectiveFieldOfView((float)fovy, oglMain.AspectRatio, 1f, (float)(camDistanceFactor * camera.camSetDistance));
-            GL.LoadMatrix(ref mat);
-            GL.MatrixMode(MatrixMode.Modelview);
+            oglMain.MakeCurrent();// Цей рядок коду встановлює контекст OpenGL для відображення вікна, пов’язаного з контекстом OpenGL.
+            GL.MatrixMode(MatrixMode.Projection);// Цей рядок коду встановлює режим матриці OpenGL для проекції.
+            GL.LoadIdentity();// Цей рядок коду встановлює поточну матрицю OpenGL в одиничну матрицю.
+            Matrix4 mat = Matrix4.CreatePerspectiveFieldOfView((float)fovy, oglMain.AspectRatio, 1f, (float)(camDistanceFactor * camera.camSetDistance));// Цей рядок коду встановлює матрицю перспективи OpenGL для відображення віддалених об’єктів.
+            GL.LoadMatrix(ref mat);// Цей рядок коду встановлює поточну матрицю OpenGL в матрицю mat.
+            GL.MatrixMode(MatrixMode.Modelview);// Цей рядок коду встановлює режим матриці OpenGL для подальшого трансформування моделей.
         }
 
         //All the files that need to be saved when closing field or app

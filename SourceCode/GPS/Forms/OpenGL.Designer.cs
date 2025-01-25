@@ -39,21 +39,21 @@ namespace AgOpenGPS
             GL.ClearColor(0.14f, 0.14f, 0.37f, 1.0f);// встановлює колір очищення буфера
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);// встановлює функцію злиття
             GL.CullFace(CullFaceMode.Back); // встановлює режим відкидання. Відкидає задні грани
-            SetZoom();//SetZoom() - встановлює зум -  public void SetZoom()
-            tmrWatchdog.Enabled = true;
+            SetZoom();//SetZoom() - встановлює зум -  public void SetZoom() повязано з класом камера
+            tmrWatchdog.Enabled = true;// встановлює таймер
         }
 
         //oglMain needs a resize
         private void oglMain_Resize(object sender, EventArgs e)
         {
             oglMain.MakeCurrent();
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Viewport(0, 0, oglMain.Width, oglMain.Height);
+            GL.MatrixMode(MatrixMode.Projection);// встановлює матрицю проекції
+            GL.LoadIdentity();// встановлює поточну матрицю в її початковий стан
+            GL.Viewport(0, 0, oglMain.Width, oglMain.Height);// це функція OpenGL, яка визначає прямокутну область вікна, де відбуватиметься візуалізація.
             Matrix4 mat = Matrix4.CreatePerspectiveFieldOfView((float)fovy, (float)oglMain.Width / (float)oglMain.Height,
-                1.0f, (float)(camDistanceFactor * camera.camSetDistance));
-            GL.LoadMatrix(ref mat);
-            GL.MatrixMode(MatrixMode.Modelview);
+                1.0f, (float)(camDistanceFactor * camera.camSetDistance));//створює матрицю перспективи
+            GL.LoadMatrix(ref mat);//завантажує матрицю
+            GL.MatrixMode(MatrixMode.Modelview);// встановлює матрицю моделі для подальших операцій над об'єктами 
         }
 
         //oglMain rendering, Draw
@@ -66,43 +66,43 @@ namespace AgOpenGPS
         vec2 right = new vec2();
         vec2 ptTip = new vec2();
 
-        private void oglMain_Paint(object sender, PaintEventArgs e)
+        private void oglMain_Paint(object sender, PaintEventArgs e) //oglMain_Paint(object sender, PaintEventArgs e) - це подія, яка виникає, коли потрібно перемалювати вміст елемента управління викликається із updateFixposition oglMain.Refresh();
         {
-            if (sentenceCounter < 299)
+            if (sentenceCounter < 299)// лічильник речень GPS
             {
                 if (isGPSPositionInitialized)
                 {
-                    oglMain.MakeCurrent();
+                    oglMain.MakeCurrent();//set the oglMain to current
 
                     if (!isInit)
                     {
-                        oglMain_Resize(oglMain, EventArgs.Empty);
+                        oglMain_Resize(oglMain, EventArgs.Empty);// перемальовуємо
                     }
                     isInit = true;
 
                     //  Clear the color and depth buffer.
                     GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
 
-                    if (isDay) GL.ClearColor(0.27f, 0.4f, 0.7f, 1.0f);
+                    if (isDay) GL.ClearColor(0.27f, 0.4f, 0.7f, 1.0f);//режим день ніч
                     else GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
                     GL.LoadIdentity();
 
                     //position the camera
-                    camera.SetWorldCam(pivotAxlePos.easting, pivotAxlePos.northing, camHeading);
+                    camera.SetWorldCam(pivotAxlePos.easting, pivotAxlePos.northing, camHeading);//встановлює позицію камери в світі залежно від позиції осі обертання, напрямку руху
 
-                    //the bounding box of the camera for cullling.
-                    CalcFrustum();
-                    GL.Disable(EnableCap.Blend);
+                    //the bounding box of the camera for cullling.//обмежувальна рамка камери для вибракування.
+                    CalcFrustum(); // визначає площини відсікання для камери відносно позиції камери і напрямку перегляду (розібрати пізніше!!!)
+                    GL.Disable(EnableCap.Blend);//вимикає злиття
 
-                    worldGrid.DrawFieldSurface();
+                    worldGrid.DrawFieldSurface();//малює поверхню поля
 
                     ////if grid is on draw it
-                    if (isGridOn) worldGrid.DrawWorldGrid(camera.gridZoom);
+                    if (isGridOn) worldGrid.DrawWorldGrid(camera.gridZoom);//малює сітку
 
-                    if (isDrawPolygons) GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
+                    if (isDrawPolygons) GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);// режим каркасу ліній
 
-                    GL.Enable(EnableCap.Blend);
+                    GL.Enable(EnableCap.Blend);//вмикає злиття
                     //draw patches of sections
 
                     //direction marker width
@@ -110,7 +110,7 @@ namespace AgOpenGPS
                     if (tool.width > 35) factor = 0.45;
                     else if (tool.width > 16) factor = 0.4;
 
-                    GL.LineWidth(1);
+                    GL.LineWidth(1);//товщина лінії
 
                     for (int j = 0; j < triStrip.Count; j++)
                     {
@@ -129,7 +129,7 @@ namespace AgOpenGPS
                             if (camera.camSetDistance < -5000) mipmap = 16;
 
 
-                            //for every new chunk of patch
+                            //for every new chunk of patch// для кожного нового шматка патча
                             foreach (var triList in triStrip[j].patchList)
                             {
                                 //check for even
@@ -255,7 +255,7 @@ namespace AgOpenGPS
                         }
                     }
 
-                    // the follow up to sections patches
+                    // the follow up to sections patches// наступ до патчів секцій
                     int patchCount = 0;
 
                     if (patchCounter > 0)
@@ -298,7 +298,7 @@ namespace AgOpenGPS
                         }
                     }
 
-                    if (tram.displayMode != 0) tram.DrawTram();
+                    if (tram.displayMode != 0) tram.DrawTram();// малює трамвай (процедура в класі Tram) технологічні колії для обприскувача
 
                     GL.PolygonMode(MaterialFace.Front, PolygonMode.Fill);
                     //GL.Color3(1, 1, 1);
@@ -322,7 +322,7 @@ namespace AgOpenGPS
                     //draw contour line if button on 
                     if (ct.isContourBtnOn)
                     {
-                        ct.DrawContourLine();
+                        ct.DrawContourLine();// малює контурну лінію
                     }
                     else// draw the current and reference AB Lines or CurveAB Ref and line
                     {
@@ -400,7 +400,7 @@ namespace AgOpenGPS
                         tool.DrawTool();
                         vehicle.DrawVehicle();
                     }
-                    GL.PopMatrix();
+                    GL.PopMatrix();//
 
                     if (camera.camSetDistance > -250)
                     {
